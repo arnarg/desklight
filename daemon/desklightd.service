@@ -1,0 +1,10 @@
+[Unit]
+Description=Desklight daemon
+
+[Service]
+Type=simple
+ExecStartPre=-/usr/bin/rm -rf /tmp/desklightd
+ExecStart=/usr/bin/desklightd
+
+[Install]
+WantedBy=multi-user.target
