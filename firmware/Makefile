@@ -1,13 +1,12 @@
-# WinAVR cross-compiler toolchain is used here
+ISP = usbtiny
+MMCU = attiny85
 CC = avr-gcc
 OBJCOPY = avr-objcopy
 DUDE = avrdude
 
-# If you are not using ATtiny2313 and the USBtiny programmer,
-# update the lines below to match your configuration
-CFLAGS = -Wall -Os -Iusbdrv -mmcu=attiny85 -DF_CPU=16500000
+CFLAGS = -Wall -Os -Iusbdrv -mmcu=$(MMCU) -DF_CPU=16500000
 OBJFLAGS = -j .text -j .data -O ihex
-DUDEFLAGS = -p attiny85 -c usbtiny -v
+DUDEFLAGS = -p $(MMCU) -c $(ISP) -v
 
 # Object files for the firmware (usbdrv/oddebug.o not strictly needed I think)
 # usbdrv/usbdrv.o usbdrv/oddebug.o usbdrv/usbdrvasm.o
@@ -19,6 +18,10 @@ all: main.hex $(CMDLINE)
 # With this, you can flash the firmware by just typing "make flash" on command-line
 flash: main.hex
 	$(DUDE) $(DUDEFLAGS) -U flash:w:$<
+
+# With this, you can write the required fuses
+fuse:
+	$(DUDE) $(DUDEFLAGS) -U lfuse:w:0xe1:m -U hfuse:w:0xdd:m
 
 # Housekeeping if you want it
 clean:
