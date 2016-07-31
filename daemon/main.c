@@ -30,7 +30,7 @@
 
 typedef struct {
 	char opcode;
-	char value;
+	unsigned char value;
 } packet;
 
 void permission(void);
@@ -40,7 +40,7 @@ int main(void) {
 	struct sockaddr_un server, client;
 	int sockfd, connfd, i, max_fd, retval, len, clients[MAX_CLIENTS];
 	fd_set rfds;
-	char buf[5];
+	char buf[8];
 
 	/* Open USB device */
 	if ((handle = usbOpenDevice(VENDOR_ID, VENDOR_NAME, PRODUCT_ID, PRODUCT_NAME)) == NULL) {
@@ -75,7 +75,6 @@ int main(void) {
 	}
 
 	for(;;) {
-		printf("Waiting for connections.\n");
 		/* Empty the fd set */
 		FD_ZERO(&rfds);
 		/* Add the master socket to the set */
@@ -98,7 +97,6 @@ int main(void) {
 
 		if (retval > 0) {
 			if (FD_ISSET(sockfd, &rfds)) {
-				printf("Incoming connection.\n");
 				int set = 0;
 				len = sizeof(client);
 
@@ -125,20 +123,22 @@ int main(void) {
 			for (i = 0; i < MAX_CLIENTS; ++i) {
 				if (clients[i] != -1 && FD_ISSET(clients[i], &rfds)) {
 					packet* p;
-					printf("Message from client.\n");
 					if((retval = read(clients[i], buf, sizeof(buf))) == 0) {
 						printf("Closing connection.\n");
 						close(clients[i]);
 						clients[i] = -1;
 					} else {
-						p = (packet*)buf;
-						printf("%d %d\n", p->opcode, p->value);
-						/* Send to usb */
-						retval = usb_control_msg(handle,
-						                USB_TYPE_VENDOR | USB_RECIP_DEVICE | USB_ENDPOINT_IN,
-						                p->opcode, p->value, 0, buf, sizeof(buf), 5000);
-						if (retval < 0) {
-							perror("usb_control_msg error.\n");
+						len = retval;
+						for (i = 0; i < len; i += sizeof(packet)) {
+							p = (packet*)(buf+i);
+
+							/* Send to usb */
+							retval = usb_control_msg(handle,
+								USB_TYPE_VENDOR | USB_RECIP_DEVICE | USB_ENDPOINT_IN,
+								p->opcode, p->value, 0, buf, sizeof(buf), 5000);
+							if (retval < 0) {
+								perror("usb_control_msg error.\n");
+							}
 						}
 					}
 				}
