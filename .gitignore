@@ -13,4 +13,4 @@
 .dep/
 vgcore.*
 desklightd
-desklight
+client/desklight
