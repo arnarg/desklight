@@ -9,7 +9,6 @@
     "alt": "^0.18.5",
     "alt-utils": "^1.0.0",
     "react": "15.2.1",
-    "react-native": "0.30.0",
-    "react-native-navbar": "^1.5.0"
+    "react-native": "0.30.0"
   }
 }
