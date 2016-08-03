@@ -12,6 +12,7 @@ import Color from './Color';
 import Controls from './Controls';
 
 import ColorStore from '../stores/ColorStore';
+import SocketStore from '../stores/SocketStore';
 
 class Main extends Component {
 	constructor() {
@@ -19,11 +20,11 @@ class Main extends Component {
 	}
 
 	static getStores(props) {
-		return [ColorStore];
+		return [ColorStore, SocketStore];
 	}
 
 	static getPropsFromStores(props) {
-		return {colors: ColorStore.getState()};
+		return {colors: ColorStore.getState(), socket: SocketStore.getState()};
 	}
 
 	render() {

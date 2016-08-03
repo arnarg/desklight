@@ -20,9 +20,21 @@ class Controls extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<ColorSlider value={this.props.colors.red} text='Red' onChange={ColorActions.red} />
-				<ColorSlider value={this.props.colors.green} text='Green' onChange={ColorActions.green} />
-				<ColorSlider value={this.props.colors.blue} text='Blue' onChange={ColorActions.blue} />
+				<ColorSlider
+					value={this.props.colors.red}
+					text='Red'
+					onChange={ColorActions.red}
+				/>
+				<ColorSlider
+					value={this.props.colors.green}
+					text='Green'
+					onChange={ColorActions.green}
+				/>
+				<ColorSlider
+					value={this.props.colors.blue}
+					text='Blue'
+					onChange={ColorActions.blue}
+				/>
 			</View>
 		);
 	}
