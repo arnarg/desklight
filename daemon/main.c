@@ -4,8 +4,8 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <sys/un.h>
 #include <sys/stat.h>
+#include <arpa/inet.h>
 #include <unistd.h>
 #include <grp.h>
 
@@ -33,11 +33,9 @@ typedef struct {
 	unsigned char value;
 } packet;
 
-void permission(void);
-
 int main(void) {
 	usb_dev_handle* handle = NULL;
-	struct sockaddr_un server, client;
+	struct sockaddr_in server, client;
 	int sockfd, connfd, i, max_fd, retval, len, clients[MAX_CLIENTS];
 	fd_set rfds;
 	char buf[8];
@@ -51,23 +49,20 @@ int main(void) {
 	/* Initialize client array */
 	for (i = 0; i < MAX_CLIENTS; ++i) clients[i] = -1;
 
-	if ((sockfd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1) {
+	if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
 		perror("Could not create socket.\n");
 		exit(1);
 	}
 
-	server.sun_family = AF_UNIX;
-	strcpy(server.sun_path, SOCK_PATH);
-	unlink(server.sun_path);
-	len = strlen(server.sun_path) + sizeof(server.sun_family);
+	memset(&server, 0, sizeof(server));
+	server.sin_family = AF_INET;
+	server.sin_addr.s_addr = htonl(INADDR_ANY);
+	server.sin_port = htons(1234);
 
-	if (bind(sockfd, (struct sockaddr*)&server, len) == -1) {
+	if (bind(sockfd, (struct sockaddr*)&server, sizeof(server)) == -1) {
 		perror("Could not bind socket.\n");
 		exit(1);
 	}
-
-	/* Setting permissions for socket */
-	permission();
 
 	if (listen(sockfd, 5) == -1) {
 		perror("Could not listen.\n");
@@ -147,29 +142,4 @@ int main(void) {
 	}
 
 	return 0;
-}
-
-void permission(void) {
-	int gid, uid = getuid();
-	struct group* grp;
-
-	/* Get gid of desklight group */
-	if ((grp = getgrnam("desklight")) == NULL) {
-		perror("Group desklight does not exist.\n");
-		exit(1);
-	}
-
-	gid = grp->gr_gid;
-
-	/* Change group ownership */
-	if (chown(SOCK_PATH, uid, gid) == -1) {
-		perror("Could not change group ownership of socket.\n");
-		exit(1);
-	}
-
-	/* Give group permissions */
-	if (chmod(SOCK_PATH, 0774) == -1) {
-		perror("Could not change file permissions of socket.\n");
-		exit(1);
-	}
 }
