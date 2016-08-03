@@ -3,9 +3,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/socket.h>
-#include <sys/un.h>
-
-#define SOCK_PATH	"/tmp/desklightd.sock"
+#include <arpa/inet.h>
+#include <netdb.h>
 
 /* USB control messages */
 #define RED			0
@@ -25,8 +24,9 @@ int main(int argc, char* argv[]) {
 	int arg;
 	int r_val = -1, g_val = -1, b_val = -1, f_val = 0;
 	int was_set = 0;
-	int sockfd, len;
-	struct sockaddr_un remote;
+	int sockfd;
+	struct sockaddr_in remote;
+	struct hostent *he;
 	packet p;
 
 	/* Parse args */
@@ -66,16 +66,23 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	if ((sockfd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1) {
-		perror("Could not create socket.\n");
+	if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
+		perror("Could not create socket.");
 		exit(1);
 	}
 
-	remote.sun_family = AF_UNIX;
-	strcpy(remote.sun_path, SOCK_PATH);
-	len = strlen(remote.sun_path) + sizeof(remote.sun_family);
-	if (connect(sockfd, (struct sockaddr*)&remote, len) == -1) {
-		perror("Could not connect to socket.\n");
+	if ((he = gethostbyname("127.0.0.1")) == NULL) {
+		perror("Could not resolve host.");
+		exit(1); /* error */
+	}
+
+	memset(&remote, 0, sizeof(remote));
+	remote.sin_family = AF_INET;
+	remote.sin_port = htons(1234);
+	memcpy(&remote.sin_addr, he->h_addr_list[0], he->h_length);
+
+	if (connect(sockfd, (struct sockaddr*)&remote, sizeof(remote)) == -1) {
+		perror("Could not connect to socket.");
 		exit(1);
 	}
 
@@ -116,7 +123,7 @@ int send_packet(int sockfd, packet p) {
 	int ret;
 
 	if ((ret = send(sockfd, (void*)&p, sizeof(p), 0)) == -1) {
-		perror("Could not send packet.\n");
+		perror("Could not send packet.");
 	}
 
 	return ret;
