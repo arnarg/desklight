@@ -10,6 +10,7 @@ import connectToStores from 'alt-utils/lib/connectToStores';
 
 import Color from './Color';
 import Controls from './Controls';
+import Presets from './Presets';
 
 import ColorStore from '../stores/ColorStore';
 import SocketStore from '../stores/SocketStore';
@@ -30,6 +31,7 @@ class Main extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
+				<Presets colors={this.props.colors} />
 				<Color colors={this.props.colors} />
 				<Controls colors={this.props.colors} />
 			</View>

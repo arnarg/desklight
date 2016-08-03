@@ -14,6 +14,7 @@ class ColorStore {
 		this.bindAction(ColorActions.RED, this.updateRed);
 		this.bindAction(ColorActions.GREEN, this.updateGreen);
 		this.bindAction(ColorActions.BLUE, this.updateBlue);
+		this.bindAction(ColorActions.SET, this.update);
 	}
 
 	updateRed(value) {
@@ -26,6 +27,10 @@ class ColorStore {
 
 	updateBlue(value) {
 		this.setState({blue: value});
+	}
+
+	update(colors) {
+		this.setState({red: colors.red, green: colors.green, blue: colors.blue});
 	}
 }
 

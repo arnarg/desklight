@@ -28,7 +28,7 @@ class Main extends Component {
 					maximumValue={255}
 					step={1}
 					style={styles.slider}
-					value={this.value}
+					value={this.props.value}
 					onValueChange={this._onChange}
 				/>
 				<Text style={styles.value}>{this.props.value}</Text>

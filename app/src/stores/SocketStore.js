@@ -26,6 +26,7 @@ class SocketStore {
 		this.bindAction(ColorActions.RED, this.updateRed);
 		this.bindAction(ColorActions.GREEN, this.updateGreen);
 		this.bindAction(ColorActions.BLUE, this.updateBlue);
+		this.bindAction(ColorActions.SET, this.update);
 	}
 
 	updateRed(value) {
@@ -38,6 +39,10 @@ class SocketStore {
 
 	updateBlue(value) {
 		this.socket.write(Buffer.from([2, value]));
+	}
+
+	update(colors) {
+		this.socket.write(Buffer.from([0, colors.red, 1, colors.green, 2, colors.blue]));
 	}
 }
 
