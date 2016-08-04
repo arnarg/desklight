@@ -8,6 +8,7 @@
   "dependencies": {
     "alt": "^0.18.5",
     "alt-utils": "^1.0.0",
+    "async": "^2.0.1",
     "buffer": "^4.7.1",
     "react": "15.2.1",
     "react-native": "0.30.0"

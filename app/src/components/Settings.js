@@ -3,7 +3,9 @@
 import React, { Component } from 'react';
 import {
 	StyleSheet,
-	Text
+	Text,
+	ListView,
+	ToastAndroid
 } from 'react-native';
 
 class Settings extends Component {
@@ -12,9 +14,26 @@ class Settings extends Component {
 	}
 
 	render() {
+		const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+		const dataSource = ds.cloneWithRows([
+			{
+				title: 'Host',
+				value: this.props.socket.settings.host
+			},
+			{
+				title: 'Port',
+				value: this.props.socket.settings.port
+			}
+		]);
+
 		return (
-			<Text>Hello Settings!</Text>
+			<ListView
+				dataSource={dataSource}
+				renderRow={(data) => <Text>{data.title} {data.value}</Text>}
+			/>
 		);
+		//return (<Text>hello</Text>);
 	}
 }
 
