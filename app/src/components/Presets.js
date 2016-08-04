@@ -34,7 +34,6 @@ class Presets extends Component {
 
 const styles = StyleSheet.create({
 	container: {
-		marginTop: 58,
 		paddingTop: 10,
 		paddingBottom: 10,
 		paddingLeft: 20,

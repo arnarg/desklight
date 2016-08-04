@@ -1,6 +1,7 @@
 package com.desklight;
 
 import com.facebook.react.ReactActivity;
+import com.oblador.vectoricons.VectorIconsPackage;
 import com.peel.react.TcpSocketsModule;
 
 public class MainActivity extends ReactActivity {
