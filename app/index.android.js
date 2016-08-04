@@ -11,11 +11,11 @@ import {
 	View,
 	Navigator,
 	BackAndroid,
-	ToolbarAndroid
+	ToolbarAndroid,
+	Text
 } from 'react-native';
 
-import Main from './src/components/Main';
-import Settings from './src/components/Settings';
+import App from './src/app';
 
 const _routes = [
 	{title: 'Desklight', index: 0},
@@ -25,8 +25,9 @@ const _routes = [
 let _navigator; // we fill this up upon on first navigation.
 
 BackAndroid.addEventListener('hardwareBackPress', () => {
-	if (!_navigator) return false;
-	if (_navigator.getCurrentRoutes().length === 1 ) return false;
+	if (_navigator.getCurrentRoutes().length === 1 ) {
+		return false;
+	}
 	_navigator.pop();
 	return true;
 });
@@ -50,7 +51,6 @@ class Desklight extends Component {
 
 	renderScene(route, navigator) {
 		_navigator = navigator;
-		let Component = Main;
 		let navIcon = null;
 		let actions = [{
 			title: 'Settings',
@@ -58,24 +58,15 @@ class Desklight extends Component {
 			show: 'always'
 		}];
 
-		switch(route.index) {
-			case 0:
-				Component = Main;
-				break;
-			case 1:
-				Component = Settings;
-				navIcon = require('image!ic_arrow_back_white_24dp');
-				actions = null;
-				break;
-		};
+		if (route.index === 1) {
+			navIcon = require('image!ic_arrow_back_white_24dp');
+			actions = null;
+		}
 
 		return (
 			<View style={styles.appContainer}>
 				<ToolbarAndroid
-					style={{
-						height: 56,
-						backgroundColor: '#607d8b'
-					}}
+					style={styles.navBar}
 					title={route.title}
 					navIcon={navIcon}
 					onIconClicked={navigator.pop}
@@ -83,7 +74,7 @@ class Desklight extends Component {
 					onActionSelected={this.onActionSelected}
 					titleColor={'#FFFFFF'}
 				/>
-				<Component
+				<App
 					navigator={navigator}
 					route={route}
 				/>
@@ -97,23 +88,9 @@ class Desklight extends Component {
 }
 
 const styles = StyleSheet.create({
-	navigator: {
-		flex: 1
-	},
 	navBar: {
+		height: 56,
 		backgroundColor: '#607d8b'
-	},
-	navBarTitle: {
-		marginTop: 14,
-		marginLeft: 14,
-		color: 'white',
-		fontSize: 20,
-		fontWeight: 'bold'
-	},
-	navBarBtn: {
-		marginTop: 12,
-		marginRight: 10,
-		marginLeft: 10
 	},
 	appContainer: {
 		flex: 1,

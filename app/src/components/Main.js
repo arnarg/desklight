@@ -21,17 +21,16 @@ class Main extends Component {
 	}
 
 	static getStores(props) {
-		return [ColorStore, SocketStore];
+		return [ColorStore];
 	}
 
 	static getPropsFromStores(props) {
-		return {colors: ColorStore.getState(), socket: SocketStore.getState()};
+		return {colors: ColorStore.getState()};
 	}
 
 	render() {
 		return (
 			<View style={styles.container}>
-				<Presets colors={this.props.colors} />
 				<Color colors={this.props.colors} />
 				<Controls colors={this.props.colors} />
 			</View>
