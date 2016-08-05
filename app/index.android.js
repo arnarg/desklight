@@ -12,7 +12,8 @@ import {
 	Navigator,
 	BackAndroid,
 	ToolbarAndroid,
-	Text
+	Text,
+	StatusBar
 } from 'react-native';
 
 import App from './src/app';
@@ -25,7 +26,7 @@ const _routes = [
 let _navigator; // we fill this up upon on first navigation.
 
 BackAndroid.addEventListener('hardwareBackPress', () => {
-	if (_navigator.getCurrentRoutes().length === 1 ) {
+	if (_navigator.getCurrentRoutes().length < 2 ) {
 		return false;
 	}
 	_navigator.pop();
@@ -65,6 +66,7 @@ class Desklight extends Component {
 
 		return (
 			<View style={styles.appContainer}>
+				<StatusBar backgroundColor='#455a64' />
 				<ToolbarAndroid
 					style={styles.navBar}
 					title={route.title}

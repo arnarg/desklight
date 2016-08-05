@@ -71,6 +71,7 @@ class SocketStore {
 		AsyncStorage.setItem('@DesklightStore:host', `${host}`, (err) => {
 			if (!err) {
 				this.setState({settings: {host: host, port: this.state.settings.port}});
+				ToastAndroid.show('Saved host.', ToastAndroid.SHORT);
 			} else {
 				ToastAndroid.show('Error saving host.', ToastAndroid.SHORT);
 			}
@@ -81,6 +82,7 @@ class SocketStore {
 		AsyncStorage.setItem('@DesklightStore:port', `${port}`, (err) => {
 			if (!err) {
 				this.setState({settings: {host: this.state.settings.host, port: port}});
+				ToastAndroid.show('Saved port.', ToastAndroid.SHORT);
 			} else {
 				ToastAndroid.show('Error saving port.', ToastAndroid.SHORT);
 			}
