@@ -20,9 +20,14 @@ class Settings extends Component {
 		super();
 		this.state = {
 			modalVisible: false,
-			modalData: {key: '', port: ''}
+			modalData: {key: '', port: ''},
+			changed: false
 		}
 		this.renderRow = this.renderRow.bind(this);
+	}
+
+	componentWillUnmount() {
+		if (this.state.changed) SocketActions.connect();
 	}
 
 	render() {
@@ -75,6 +80,7 @@ class Settings extends Component {
 												SocketActions.setPort(this.state.modalData.value.toString());
 												break;
 										}
+										this.setState({changed: true});
 									}}
 								>
 									<Text style={styles.btnText}>OK</Text>

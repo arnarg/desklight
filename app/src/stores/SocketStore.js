@@ -17,7 +17,7 @@ global.Buffer = global.Buffer || require('buffer').Buffer
 
 class SocketStore {
 	constructor() {
-		this.state = {state: 1, settings: {host: 'localhost', port: 4759}};
+		this.state = {state: 0, settings: {host: 'localhost', port: 4759}};
 
 		parallel([
 			(cb) => {
@@ -31,15 +31,7 @@ class SocketStore {
 			if (res[0] !== null) this.state.settings.host = res[0];
 			if (res[1] !== null) this.state.settings.port = parseInt(res[1]);
 
-			ToastAndroid.show(res[0] + ' ' + res[1], ToastAndroid.SHORT);
-
-			this.socket = net.createConnection({host: '192.168.1.60', port: 1234}, () => {
-				this.setState({state: 2});
-			});
-
-			this.socket.on('end', () => {
-				this.setState({state: 0});
-			});
+			this.connect();
 		});
 
 		this.bindAction(ColorActions.RED, this.updateRed);
@@ -91,6 +83,9 @@ class SocketStore {
 
 	connect() {
 		this.setState({state: 1});
+
+		if (this.socket) this.socket.end();
+
 		this.socket = net.createConnection({
 			host: this.state.settings.host,
 			port: this.state.settings.port
@@ -98,8 +93,14 @@ class SocketStore {
 			this.setState({state: 2});
 		});
 
-		this.socket.on('end', () => {
+		this.socket.on('error', (ex) => {
 			this.setState({state: 0});
+			ToastAndroid.show('Could not establish connection.', ToastAndroid.SHORT);
+		});
+
+		this.socket.on('close', () => {
+			this.setState({state: 0});
+			ToastAndroid.show('Connection closed.', ToastAndroid.SHORT);
 		});
 	}
 }
