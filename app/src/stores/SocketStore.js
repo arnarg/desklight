@@ -41,6 +41,7 @@ class SocketStore {
 		this.bindAction(SocketActions.SET_HOST, this.setHost);
 		this.bindAction(SocketActions.SET_PORT, this.setPort);
 		this.bindAction(SocketActions.CONNECT, this.connect);
+		this.bindAction(SocketActions.FADE, this.fade);
 	}
 
 	updateRed(value) {
@@ -57,6 +58,10 @@ class SocketStore {
 
 	update(colors) {
 		this.socket.write(Buffer.from([0, colors.red, 1, colors.green, 2, colors.blue]));
+	}
+
+	fade() {
+		this.socket.write(Buffer.from([3, 0]));
 	}
 
 	setHost(host) {

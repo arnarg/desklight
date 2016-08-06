@@ -2,4 +2,4 @@
 
 import alt from '../alt';
 
-export default alt.generateActions('red', 'green', 'blue', 'set', 'fade');
+export default alt.generateActions('red', 'green', 'blue', 'set');

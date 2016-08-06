@@ -5,12 +5,14 @@ import {
 	StyleSheet,
 	Text,
 	View,
-	Slider
+	Slider,
+	TouchableOpacity
 } from 'react-native';
 
 import ColorSlider from './ColorSlider';
 
 import ColorActions from '../actions/ColorActions';
+import SocketActions from '../actions/SocketActions';
 
 class Controls extends Component {
 	constructor() {
@@ -35,6 +37,13 @@ class Controls extends Component {
 					text='Blue'
 					onChange={ColorActions.blue}
 				/>
+				<View style={styles.btnRow}>
+					<TouchableOpacity
+						onPress={() => SocketActions.fade()}
+					>
+						<Text style={styles.btnText}>FADE</Text>
+					</TouchableOpacity>
+				</View>
 			</View>
 		);
 	}
@@ -50,6 +59,16 @@ const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'column',
 		padding: 20
+	},
+	btnRow: {
+		marginTop: 10,
+		flex: 0,
+		flexDirection: 'row',
+		justifyContent: 'center'
+	},
+	btnText: {
+		fontSize: 20,
+		color: '#009688'
 	}
 });
 
