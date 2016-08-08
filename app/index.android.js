@@ -13,7 +13,8 @@ import {
 	BackAndroid,
 	ToolbarAndroid,
 	Text,
-	StatusBar
+	StatusBar,
+	ToastAndroid
 } from 'react-native';
 
 import App from './src/app';
@@ -44,7 +45,6 @@ class Desklight extends Component {
 		return (
 			<Navigator
 				initialRoute={_routes[0]}
-				initialRouteStack={_routes}
 				renderScene={this.renderScene}
 			/>
 		);
