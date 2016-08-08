@@ -42,7 +42,7 @@ int main(void) {
 
 	/* Open USB device */
 	if ((handle = usbOpenDevice(VENDOR_ID, VENDOR_NAME, PRODUCT_ID, PRODUCT_NAME)) == NULL) {
-		perror("Could not open USB device.\n");
+		perror("usbOpenDevice");
 		exit(1);
 	}
 
@@ -50,7 +50,7 @@ int main(void) {
 	for (i = 0; i < MAX_CLIENTS; ++i) clients[i] = -1;
 
 	if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
-		perror("Could not create socket.\n");
+		perror("socket");
 		exit(1);
 	}
 
@@ -60,12 +60,12 @@ int main(void) {
 	server.sin_port = htons(1234);
 
 	if (bind(sockfd, (struct sockaddr*)&server, sizeof(server)) == -1) {
-		perror("Could not bind socket.\n");
+		perror("bind");
 		exit(1);
 	}
 
 	if (listen(sockfd, 5) == -1) {
-		perror("Could not listen.\n");
+		perror("listen");
 		exit(1);
 	}
 
@@ -87,7 +87,7 @@ int main(void) {
 		}
 
 		if ((retval = select(max_fd + 1, &rfds, NULL, NULL, NULL)) == -1) {
-			perror("Select failed.\n");
+			perror("select");
 		}
 
 		if (retval > 0) {
@@ -132,7 +132,7 @@ int main(void) {
 								USB_TYPE_VENDOR | USB_RECIP_DEVICE | USB_ENDPOINT_IN,
 								p->opcode, p->value, 0, buf, sizeof(buf), 5000);
 							if (retval < 0) {
-								perror("usb_control_msg error.\n");
+								perror("usb_control_msg");
 							}
 						}
 					}
