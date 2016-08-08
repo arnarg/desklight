@@ -5,7 +5,8 @@ import {
 	View,
 	TouchableOpacity,
 	AsyncStorage,
-	ToastAndroid
+	ToastAndroid,
+	Vibration
 } from 'react-native';
 
 import ColorActions from '../actions/ColorActions';
@@ -57,6 +58,7 @@ class Preset extends Component {
 		AsyncStorage.setItem(`@DesklightStore:color${this.props.id}`, JSON.stringify(this.props.colors), (err) => {
 			if (!err) {
 				this.setState({color: this.props.colors});
+				Vibration.vibrate([0, 100]);
 				ToastAndroid.show('Preset saved.', ToastAndroid.SHORT);
 			} else {
 				ToastAndroid.show('Could not save preset', ToastAndroid.SHORT);
