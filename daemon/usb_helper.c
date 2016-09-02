@@ -98,3 +98,12 @@ usb_dev_handle * usbOpenDevice(int vendor, char *vendorName,
 
     return NULL;
 }
+
+void send_usb_packet(packet* p, usb_dev_handle* usb_handle) {
+	int retval = usb_control_msg(usb_handle,
+		USB_TYPE_VENDOR | USB_RECIP_DEVICE | USB_ENDPOINT_IN,
+		p->opcode, p->value, 0, (void*)p, sizeof(packet), 5000);
+	if (retval < 0) {
+		perror("usb_control_msg");
+	}
+}

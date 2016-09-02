@@ -15,6 +15,8 @@
 #ifndef USB_HELPER_H
 #define USB_HELPER_H
 #include <usb.h>
+#include "utils.h"
+
 /* Used to get descriptor strings for device identification */
 int usbGetDescriptorString(usb_dev_handle *dev, int index, int langid,
                                   char *buf, int buflen);
@@ -22,4 +24,7 @@ int usbGetDescriptorString(usb_dev_handle *dev, int index, int langid,
 /******************************************************************************/
 usb_dev_handle * usbOpenDevice(int vendor, char *vendorName,
                                       int product, char *productName);
+
+void send_usb_packet(packet* p, usb_dev_handle* usb_handle);
+
 #endif

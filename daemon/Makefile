@@ -5,7 +5,7 @@ STRIP = strip
 CFLAGS = -Wall -O2
 LIBS = -lusb
 
-OBJS = main.o usb_helper.o
+OBJS = main.o usb_helper.o utils.o socket_utils.c
 
 all: $(PROG)
 
