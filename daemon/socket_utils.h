@@ -13,6 +13,7 @@ int wait_for_data(fd_set* fdset, int highest);
 void check_sockets(int master_fd, fd_set* fdset, int* clients, usb_dev_handle* usb_handle);
 void handle_master_socket(int master_fd, int* clients);
 int add_to_store(int connfd, int* arr);
+int find_free_slot(int* arr);
 void disconnect_client(int* clients, int i);
 void handle_client_sockets(fd_set* fdset, int* clients, usb_dev_handle* usb_handle);
 void check_client(int i, int* clients, usb_dev_handle* usb_handle);

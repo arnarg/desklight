@@ -75,16 +75,19 @@ void handle_data(char* data, int length, usb_dev_handle* usb_handle) {
 }
 
 int add_to_store(int connfd, int* arr) {
-	int index = -1;
-	for (int i = 0; i < MAX_CLIENTS; ++i) {
-		if (arr[i] == -1) {
-			arr[i] = connfd;
-			index = i;
-			printf("Accepted connection.\n");
-			break;
-		}
+	int i = find_free_slot(arr);
+	if (i >= 0) {
+		arr[i] = connfd;
+		printf("Accepted connection.\n");
 	}
-	return index;
+	return i;
+}
+
+int find_free_slot(int* arr) {
+	for (int i = 0; i < MAX_CLIENTS; ++i) {
+		if (arr[i] == -1) return i;
+	}
+	return -1;
 }
 
 void disconnect_client(int* clients, int i) {
