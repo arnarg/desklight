@@ -84,9 +84,8 @@ int add_to_store(int connfd, int* arr) {
 }
 
 int find_free_slot(int* arr) {
-	for (int i = 0; i < MAX_CLIENTS; ++i) {
+	for (int i = 0; i < MAX_CLIENTS; ++i)
 		if (arr[i] == -1) return i;
-	}
 	return -1;
 }
 
