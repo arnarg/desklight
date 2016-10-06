@@ -20,7 +20,16 @@ make flash
 
 If you're using another ISP programmer than usbtiny you need to change the ISP variable in the Makefile to your programmer as is expected by avrdude.
 
-###Schematic coming soon
+![Attiny85 pinout](https://yetanotherhackersblog.files.wordpress.com/2011/04/attiny85.png)
+```
+PB3: USB D-
+PB2: USB D+
+PB0: Red led
+PB1: Green led
+PB4: Blue led
+```
+
+There are good instructions on connecting usb to the V-USB powered microcontroller [here.](http://vusb.wikidot.com/hardware)
 
 Daemon
 ------
