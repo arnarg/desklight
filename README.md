@@ -3,7 +3,7 @@ Desklight
 
 I made this USB controller for an RGB led strip I have mounted under my desk, instead of using a (lame) IR controller that comes with many RGB led strips.
 
-With it I wrote a daemon that you can communicate with through TCP socket and actually controls the USB controller.
+With it I wrote a daemon (not really a daemon, but I'm running it with systemd) that you can communicate with through TCP socket and actually controls the USB controller.
 
 This project uses [V-USB](https://www.obdev.at/products/vusb/index.html) (a software-only implementation of a low-speed USB device for Atmel’s AVR microcontrollers).
 
