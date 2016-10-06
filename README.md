@@ -46,6 +46,32 @@ There is also a systemd service file that can be used to run the program as a da
 
 This program depends on libusb.
 
+### Protocol
+Each message is 2 bytes. First byte is an opcode and the second is a value.
+
+#### Opcodes
+```
+#define RED			0
+#define GREEN		1
+#define BLUE		2
+#define FADE		3
+```
+
+#### Examples
+To change the red color:
+```
+-------------
+| 0 | 0:255 |
+-------------
+```
+
+Multiple messages can be combined into one packet:
+```
+-------------------------
+| 0 | 0:255 | 2 | 0:255 |
+-------------------------
+```
+
 Client
 ------
 The client is a simple cli tool that talks to the daemon.
